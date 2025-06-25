@@ -77,61 +77,119 @@ document.getElementById('convertBtnn').addEventListener('click', function() {
 
 
 <!-- Task-3 -->
-
-<h2>Find Next Number in Array</h2>
+ 
+<h2>Find Next Number</h2>
 <p>Array: [10, 20, 30, 40, 50]</p>
-<input id="arrayInput" placeholder="Enter number from array">
-<button onclick="findNextInArray()">Find Next</button>
-<div id="arrayResult"></div>
-
-
-<h2> Find Next Number User Input</h2>
-<input id="userNumber" placeholder="Enter a number">
-<button onclick="findNextNumber()">Find Next</button>
-<div id="userResult"></div>
+<input id="numbersInput" placeholder="Enter number(s), e.g., 2 or 2,4,5">
+<button onClick="findNextNumber()">Find Next</button>
+<div id="result"></div>
 
 <script>
 const array = [10, 20, 30, 40, 50];
 
-function findNextInArray() {
-    const value = parseFloat(document.getElementById("arrayInput").value);
-    const index = array.indexOf(value);
-    if (index === -1) {
-        document.getElementById("arrayResult").innerText = "Number not found in array.";
-    } else if (index < array.length - 1) {
-        document.getElementById("arrayResult").innerText = "Next number in array is: " + array[index + 1];
-    } else {
-        document.getElementById("arrayResult").innerText = "This is the last number in the array.";
-    }
-}
-
 function findNextNumber() {
-    const input = document.getElementById("userNumber").value;
+    const input = document.getElementById("numbersInput").value.trim();
+    const resultDiv = document.getElementById("result");
 
     if (!input) {
-        document.getElementById("userResult").innerText = "Please enter a number.";
+        resultDiv.innerText = "Please enter a number.";
+        return;
+    }
+
+    // Split by comma and process each number
+    const numbers = input.split(",").map(num => num.trim());
+    const results = numbers.map(numStr => {
+        const num = parseFloat(numStr);
+        if (isNaN(num)) {
+            return `${numStr}: Invalid number`;
+        }
+
+        const index = array.indexOf(num);
+        if (index !== -1) {
+            return index < array.length - 1
+                ? `${num} ➔ ${array[index + 1]}`
+                : `${num} is the last number in the array`;
+        } else {
+            // Not in array: Find next integer or next float
+            if (Number.isInteger(num)) {
+                return `${num} ➔ ${num + 1}`;
+            } else {
+                return `${num} ➔ ${parseFloat((num + 1).toFixed(2))}`;
+            }
+        }
+    });
+
+    resultDiv.innerHTML = results.join("<br>");
+}
+</script>
+
+<!-- <h2>Find Next Number</h2>
+<p>Array: [10, 20, 30, 40, 50]</p>
+<input id="numberInput" placeholder="Enter a number">
+<button onclick="findNextNumber()">Find Next</button>
+<div id="result"></div>
+
+<script>
+const array = [10, 20, 30, 40, 50];
+
+function findNextNumber() {
+    const input = document.getElementById("numberInput").value.trim();
+    const resultDiv = document.getElementById("result");
+    
+    if (!input) {
+        resultDiv.innerText = "Please enter a number.";
         return;
     }
 
     const num = parseFloat(input);
     if (isNaN(num)) {
-        document.getElementById("userResult").innerText = "Invalid number.";
+        resultDiv.innerText = "Invalid number.";
         return;
     }
 
-    if (Number.isInteger(num)) {
-        document.getElementById("userResult").innerText = "Next integer is: " + (num + 1);
+    const index = array.indexOf(num);
+    if (index !== -1) {
+        if (index < array.length - 1) {
+            resultDiv.innerText = "Next number in array is: " + array[index + 1];
+        } else {
+            resultDiv.innerText = "This is the last number in the array.";
+        }
     } else {
-        document.getElementById("userResult").innerText = "Next float is: " + (num + 1);
+        if (Number.isInteger(num)) {
+            resultDiv.innerText = "Next integer is: " + (num + 1);
+        } else {
+            resultDiv.innerText = "Next float is: " + (num + 1);
+        }
     }
 }
-</script>
+</script> -->
 
 <hr>
 
 <!-- Task-4 -->
 
-<h2>Calculate BMI (Body Mass Index)</h2>
+
+<h2>Enter Your Name (in lowercase)</h2>
+<input type="text" id="nameInput" placeholder="e.g., john">
+<button onClick="displayCapitalizedName()">Display Name</button>
+<div id="nameResult" style="margin-top:10px; font-weight:bold;"></div>
+
+<script>
+function displayCapitalizedName() {
+    const name = document.getElementById("nameInput").value.trim();
+    if (!name) {
+        document.getElementById("nameResult").innerText = "Please enter a name.";
+        return;
+    }
+    const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+    document.getElementById("nameResult").innerText = `Capitalized Name: ${capitalized}`;
+}
+</script>
+
+<hr>
+
+<!-- Task-5 -->
+  <h2>Calculate BMI (Body Mass Index)</h2>
 <label for="weight">Enter weight (kg):</label>
 <input type="number" id="weight" placeholder="e.g., 70">
 
@@ -139,16 +197,19 @@ function findNextNumber() {
 <input type="number" id="height" placeholder="e.g., 1.75" step="0.01">
 
 <button onclick="calculateBMI()">Calculate</button>
-<div id="result"></div>
+<div id="bmiResult" style="margin-top:10px; font-weight:bold;"></div>
+<div id="categoryResult" style="margin-top:5px; font-weight:bold;"></div>
 
 <script>
 function calculateBMI() {
     const weight = parseFloat(document.getElementById("weight").value);
     const height = parseFloat(document.getElementById("height").value);
-    const resultDiv = document.getElementById("result");
+    const bmiResult = document.getElementById("bmiResult");
+    const categoryResult = document.getElementById("categoryResult");
 
     if (!weight || !height || weight <= 0 || height <= 0) {
-        resultDiv.innerText = "Please enter valid weight and height.";
+        bmiResult.innerText = "Please enter valid weight and height.";
+        categoryResult.innerText = "";
         return;
     }
 
@@ -160,13 +221,15 @@ function calculateBMI() {
     else if (bmi < 29.9) category = "Overweight";
     else category = "Obesity";
 
-    resultDiv.innerText = `Your BMI is ${bmi.toFixed(2)} (${category}).`;
+    bmiResult.innerText = `Your BMI is ${bmi.toFixed(2)}`;
+    categoryResult.innerText = `Category: ${category}`;
 }
 </script>
-
 <hr>
 
-<!-- Task-5 -->
+
+<!-- Task-6 -->
+
 
 <h2>First and Last Element</h2>
 <label for="size">Enter array size:</label>
@@ -174,7 +237,6 @@ function calculateBMI() {
 <button onClick="generateArray()">Generate Random Array</button>
 
 <div id="array"></div>
-<button id="pickElementsButton" style="display:none;" onClick="pickFirstAndLast()">Pick 1st and Last</button>
 <div id="result"></div>
 
 <script>
@@ -186,26 +248,33 @@ function generateArray() {
         alert("Enter a valid array size.");
         return;
     }
+function pickFirstAndLastElements(arr) {
+    if (!Array.isArray(arr) || arr.length === 0) {
+        return { error: "Array is empty or invalid." };
+    }
+    return {
+        first: arr[0],
+        last: arr[arr.length - 1]
+    };
+}
+    // 1️⃣ Generate the array
     randomArray = Array.from({ length: size }, () => Math.floor(Math.random() * 100));
     document.getElementById("array").innerText = `Generated Array: [${randomArray.join(", ")}]`;
-    document.getElementById("pickElementsButton").style.display = "block"; 
-    document.getElementById("result").innerText = ""; 
-}
 
-function pickFirstAndLast() {
-    if (randomArray.length < 1) {
-        document.getElementById("result").innerText = "Array is empty.";
-        return;
+    // 2️⃣ Use the standalone function
+    const result = pickFirstAndLastElements(randomArray);
+
+    if (result.error) {
+        document.getElementById("result").innerText = result.error;
+    } else {
+        document.getElementById("result").innerText = `First Element: ${result.first}, Last Element: ${result.last}`;
     }
-    const first = randomArray[0];
-    const last = randomArray[randomArray.length - 1];
-    document.getElementById("result").innerText = `First Element: ${first}, Last Element: ${last}`;
 }
 </script>
 
+
 <hr>
 
-<!-- Task-6 -->
 
 </body>
 </html>
