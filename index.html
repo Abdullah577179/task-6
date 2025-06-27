@@ -95,7 +95,7 @@ document.getElementById('convertBtnn').addEventListener('click', function() {
     <p>Next Number: <span id="generalResult"></span></p>
 
     <script>
-        // Scenario 1: Find next number in a fixed array
+        //  Find next number in a fixed array
         const array = [10, 20, 30, 40, 50];
 
         function findNextInArray() {
@@ -112,7 +112,7 @@ document.getElementById('convertBtnn').addEventListener('click', function() {
             }
         }
 
-        // Scenario 2: Check if input is int or float and return the next value
+        // Check if input is int or float and return the next value
         function findNextGeneral() {
             const inputVal = document.getElementById("numberInput").value;
             const number = parseFloat(inputVal);
@@ -123,7 +123,7 @@ document.getElementById('convertBtnn').addEventListener('click', function() {
                 return;
             }
 
-            // Check if the number is an integer
+            //  if the number is  integer
             if (Number.isInteger(number)) {
                 result.textContent = number + 1;
             } else {
@@ -207,10 +207,10 @@ function displayCapitalizedName() {
                 randomArray.push(Math.floor(Math.random() * 100) + 1);
             }
 
-            // Display the full array
+            // arry display
             document.getElementById("arrayDisplay").textContent = `[ ${randomArray.join(", ")} ]`;
 
-            // Pick and display first and last elements
+            // Pick and display first & last elements
             document.getElementById("firstElement").textContent = randomArray[0];
             document.getElementById("lastElement").textContent = randomArray[randomArray.length - 1];
         }
@@ -247,9 +247,9 @@ function displayCapitalizedName() {
 
             if (!isNaN(num1) && !isNaN(num2)) {
                 const sum = num1 + num2;
-                outputResult.value = sum;  // print sum
+                outputResult.value = sum;  //  sum
             } else {
-                outputResult.value = "NaN";  // fallback
+                outputResult.value = "NaN";  
             }
         });
     </script>
