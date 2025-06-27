@@ -78,94 +78,61 @@ document.getElementById('convertBtnn').addEventListener('click', function() {
 
 <!-- Task-3 -->
  
-<h2>Find Next Number</h2>
-<p>Array: [10, 20, 30, 40, 50]</p>
-<input id="numbersInput" placeholder="Enter number(s), e.g., 2 or 2,4,5">
-<button onClick="findNextNumber()">Find Next</button>
-<div id="result"></div>
 
-<script>
-const array = [10, 20, 30, 40, 50];
+    <h2>Scenario 1: Find Next Number in an Array</h2>
+    <p>Array: [10, 20, 30, 40, 50]</p>
 
-function findNextNumber() {
-    const input = document.getElementById("numbersInput").value.trim();
-    const resultDiv = document.getElementById("result");
+    <label>Enter a number to find its next in array:</label>
+    <input type="number" id="arrayInput">
+    <button onclick="findNextInArray()">Find Next</button><br><br>
+    <p>Result: <span id="arrayResult"></span></p>
 
-    if (!input) {
-        resultDiv.innerText = "Please enter a number.";
-        return;
-    }
 
-    // Split by comma and process each number
-    const numbers = input.split(",").map(num => num.trim());
-    const results = numbers.map(numStr => {
-        const num = parseFloat(numStr);
-        if (isNaN(num)) {
-            return `${numStr}: Invalid number`;
-        }
+    <h2>Scenario 2: Find Next Number (Int or Float)</h2>
+    <label>Enter any number:</label>
+    <input type="text" id="numberInput">
+    <button onclick="findNextGeneral()">Find Next</button><br><br>
+    <p>Next Number: <span id="generalResult"></span></p>
 
-        const index = array.indexOf(num);
-        if (index !== -1) {
-            return index < array.length - 1
-                ? `${num} ➔ ${array[index + 1]}`
-                : `${num} is the last number in the array`;
-        } else {
-            // Not in array: Find next integer or next float
-            if (Number.isInteger(num)) {
-                return `${num} ➔ ${num + 1}`;
+    <script>
+        // Scenario 1: Find next number in a fixed array
+        const array = [10, 20, 30, 40, 50];
+
+        function findNextInArray() {
+            const input = parseInt(document.getElementById("arrayInput").value);
+            const index = array.indexOf(input);
+            const resultSpan = document.getElementById("arrayResult");
+
+            if (index !== -1 && index < array.length - 1) {
+                resultSpan.textContent = array[index + 1];
+            } else if (index === array.length - 1) {
+                resultSpan.textContent = "No next element (it's the last one)";
             } else {
-                return `${num} ➔ ${parseFloat((num + 1).toFixed(2))}`;
+                resultSpan.textContent = "Number not found in array";
             }
         }
-    });
 
-    resultDiv.innerHTML = results.join("<br>");
-}
-</script>
+        // Scenario 2: Check if input is int or float and return the next value
+        function findNextGeneral() {
+            const inputVal = document.getElementById("numberInput").value;
+            const number = parseFloat(inputVal);
+            const result = document.getElementById("generalResult");
 
-<!-- <h2>Find Next Number</h2>
-<p>Array: [10, 20, 30, 40, 50]</p>
-<input id="numberInput" placeholder="Enter a number">
-<button onclick="findNextNumber()">Find Next</button>
-<div id="result"></div>
+            if (isNaN(number)) {
+                result.textContent = "Invalid input";
+                return;
+            }
 
-<script>
-const array = [10, 20, 30, 40, 50];
-
-function findNextNumber() {
-    const input = document.getElementById("numberInput").value.trim();
-    const resultDiv = document.getElementById("result");
-    
-    if (!input) {
-        resultDiv.innerText = "Please enter a number.";
-        return;
-    }
-
-    const num = parseFloat(input);
-    if (isNaN(num)) {
-        resultDiv.innerText = "Invalid number.";
-        return;
-    }
-
-    const index = array.indexOf(num);
-    if (index !== -1) {
-        if (index < array.length - 1) {
-            resultDiv.innerText = "Next number in array is: " + array[index + 1];
-        } else {
-            resultDiv.innerText = "This is the last number in the array.";
+            // Check if the number is an integer
+            if (Number.isInteger(number)) {
+                result.textContent = number + 1;
+            } else {
+                result.textContent = (number + 0.1).toFixed(2);
+            }
         }
-    } else {
-        if (Number.isInteger(num)) {
-            resultDiv.innerText = "Next integer is: " + (num + 1);
-        } else {
-            resultDiv.innerText = "Next float is: " + (num + 1);
-        }
-    }
-}
-</script> -->
+    </script>
 
 <hr>
-
 <!-- Task-4 -->
 
 
@@ -189,92 +156,103 @@ function displayCapitalizedName() {
 <hr>
 
 <!-- Task-5 -->
-  <h2>Calculate BMI (Body Mass Index)</h2>
-<label for="weight">Enter weight (kg):</label>
-<input type="number" id="weight" placeholder="e.g., 70">
 
-<label for="height">Enter height (meters):</label>
-<input type="number" id="height" placeholder="e.g., 1.75" step="0.01">
+    <h2>BMI (Body Mass Index) Calculator</h2>
 
-<button onclick="calculateBMI()">Calculate</button>
-<div id="bmiResult" style="margin-top:10px; font-weight:bold;"></div>
-<div id="categoryResult" style="margin-top:5px; font-weight:bold;"></div>
+    <label for="weight">Enter weight (kg):</label>
+    <input type="number" id="weight" placeholder="e.g., 70"><br><br>
 
-<script>
-function calculateBMI() {
-    const weight = parseFloat(document.getElementById("weight").value);
-    const height = parseFloat(document.getElementById("height").value);
-    const bmiResult = document.getElementById("bmiResult");
-    const categoryResult = document.getElementById("categoryResult");
+    <label for="height">Enter height (meters):</label>
+    <input type="number" id="height" placeholder="e.g., 1.75" step="0.01"><br><br>
 
-    if (!weight || !height || weight <= 0 || height <= 0) {
-        bmiResult.innerText = "Please enter valid weight and height.";
-        categoryResult.innerText = "";
-        return;
-    }
+    <button onclick="calculateBMI()">Calculate BMI</button><br><br>
 
-    const bmi = weight / (height * height);
-    let category = "";
+    <label for="bmiResult">Your BMI:</label>
+    <input type="text" id="bmiResult" readonly><br><br>
 
-    if (bmi < 18.5) category = "Underweight";
-    else if (bmi < 24.9) category = "Normal weight";
-    else if (bmi < 29.9) category = "Overweight";
-    else category = "Obesity";
+    <script>
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const resultBox = document.getElementById("bmiResult");
 
-    bmiResult.innerText = `Your BMI is ${bmi.toFixed(2)}`;
-    categoryResult.innerText = `Category: ${category}`;
-}
-</script>
+            if (weight > 0 && height > 0) {
+                const bmi = weight / (height * height);
+                resultBox.value = bmi.toFixed(2); // round to 2 decimal places
+            } else {
+                resultBox.value = "Invalid input";
+            }
+        }
+    </script>
+
 <hr>
 
 
 <!-- Task-6 -->
 
+  <h2>Random Array Generator</h2>
+    <button onclick="generateArray()">Generate Array</button><br><br>
 
-<h2>First and Last Element</h2>
-<label for="size">Enter array size:</label>
-<input type="number" id="size" placeholder="e.g., 5" />
-<button onClick="generateArray()">Generate Random Array</button>
+    <p><strong>Generated Array:</strong> <span id="arrayDisplay"></span></p>
+    <p><strong>First Element:</strong> <span id="firstElement"></span></p>
+    <p><strong>Last Element:</strong> <span id="lastElement"></span></p>
 
-<div id="array"></div>
-<div id="result"></div>
+    <script>
+        function generateArray() {
+            // Generate random array of 5 to 10 numbers between 1 and 100
+            const length = Math.floor(Math.random() * 6) + 5; // length between 5–10
+            const randomArray = [];
 
-<script>
-let randomArray = [];
+            for (let i = 0; i < length; i++) {
+                randomArray.push(Math.floor(Math.random() * 100) + 1);
+            }
 
-function generateArray() {
-    const size = parseInt(document.getElementById("size").value);
-    if (!size || size <= 0) {
-        alert("Enter a valid array size.");
-        return;
-    }
-function pickFirstAndLastElements(arr) {
-    if (!Array.isArray(arr) || arr.length === 0) {
-        return { error: "Array is empty or invalid." };
-    }
-    return {
-        first: arr[0],
-        last: arr[arr.length - 1]
-    };
-}
-    // 1️⃣ Generate the array
-    randomArray = Array.from({ length: size }, () => Math.floor(Math.random() * 100));
-    document.getElementById("array").innerText = `Generated Array: [${randomArray.join(", ")}]`;
+            // Display the full array
+            document.getElementById("arrayDisplay").textContent = `[ ${randomArray.join(", ")} ]`;
 
-    // 2️⃣ Use the standalone function
-    const result = pickFirstAndLastElements(randomArray);
-
-    if (result.error) {
-        document.getElementById("result").innerText = result.error;
-    } else {
-        document.getElementById("result").innerText = `First Element: ${result.first}, Last Element: ${result.last}`;
-    }
-}
-</script>
+            // Pick and display first and last elements
+            document.getElementById("firstElement").textContent = randomArray[0];
+            document.getElementById("lastElement").textContent = randomArray[randomArray.length - 1];
+        }
+    </script>
 
 
 <hr>
+<!-- Task-7 -->
 
+
+ <label>Enter First Number:</label>
+    <input type="text" id="inputOne"><br><br>
+
+    <label>Enter Second Number:</label>
+    <input type="text" id="inputTwo"><br><br>
+
+    <label>Result:</label>
+    <input type="text" id="outputResult" readonly><br><br>
+
+    <script>
+        const inputOne = document.getElementById("inputOne");
+        const inputTwo = document.getElementById("inputTwo");
+        const outputResult = document.getElementById("outputResult");
+
+        // Initially show NaN when only the first number is typed
+        inputOne.addEventListener("input", function () {
+            outputResult.value = "NaN";  // show NaN in result box
+        });
+
+        // Calculate and print result in 3rd box after 2nd input
+        inputTwo.addEventListener("input", function () {
+            const num1 = parseInt(inputOne.value);
+            const num2 = parseInt(inputTwo.value);
+
+            if (!isNaN(num1) && !isNaN(num2)) {
+                const sum = num1 + num2;
+                outputResult.value = sum;  // print sum
+            } else {
+                outputResult.value = "NaN";  // fallback
+            }
+        });
+    </script>
 
 </body>
 </html>
